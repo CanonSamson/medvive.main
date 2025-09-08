@@ -24,7 +24,7 @@ const SignInPage = () => {
   const [patientDetail, setPatientDetail] = useState(null)
 
   console.log(setPatientDetail, signInError)
-  const pending = true
+  const pending = false
 
   const loginEmailAndPassword = async (values: {
     email: string

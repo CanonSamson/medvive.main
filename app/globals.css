@@ -1,58 +1,40 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@custom-variant dark (&:is(.dark *));
 
-@theme inline {
-  /* Font sizes */
-  --font-size-sm: 0.8rem;
-  --font-size-base: 14px;
-  --font-size-xl: 1.25rem;
-  --font-size-2xl: 1.563rem;
-  --font-size-3xl: 1.953rem;
-  --font-size-4xl: 2.441rem;
-  --font-size-5xl: 3.052rem;
-  --font-size-6xl: 4.052rem;
-
-  /* Breakpoints */
-  --breakpoint-tablet: 640px;
-  --breakpoint-laptop: 1024px;
-  --breakpoint-desktop: 1280px;
-
-  /* Background images */
-  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
-  --background-image-gradient-conic: conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops));
-  --background-image-container: url('/container.png');
-  --background-image-hero-section-background: url('/landing_page/hero-section-background-image.png');
-
-  /* Colors */
-  --color-primary: #1648CE;
-  --color-brandwhite: #F8F8F8;
-  --color-secondary: #3C3C43;
-  --color-accent: #E2E8F9;
-  --color-dark: #303733;
-  --color-primary-dark: #002856;
-  --color-secondary-light: #F2F3F7;
-  --color-hero-overlay: #3A495969;
-  --color-dark-green: #2B6462;
-  --color-faint-text: #767676;
-
-  /* Font families */
-  --font-family-sans: 'PT Sans', sans-serif, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-family-poppins: var(--font-poppins);
-  --font-family-urbanist: 'Urbanist', sans-serif;
-  --font-family-raleway: 'Raleway', sans-serif;
-  --font-family-roboto: 'Roboto', sans-serif;
+.blurred {
+  filter: blur(7px); /* Adjust the blur amount as needed */
 }
 
-:root {
-  /* Add any additional CSS custom properties here if needed */
+.unblurred {
+  filter: blur(0px); /* Adjust the blur amount as needed */
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #1648ce #1648ce;
 }
+
+body::-webkit-scrollbar {
+  width: 5px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #1648ce;
+  border-radius: 20px;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #f2f2f2;
+  border-radius: 20px;
+}
+
+.phoneNumber input:focus {
+  outline: none;
+}
+.phoneNumber input {
+  outline: none;
+  background: transparent;
+}
+
