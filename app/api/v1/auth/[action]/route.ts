@@ -39,7 +39,7 @@ export async function POST (
   switch (action) {
     case 'send-otp':
       return handleSendOTP(request)
-    case 'verify-otp':
+    case 'verify-sign-up-otp':
       return handleVerifyOTP(request)
     case 'resend-otp':
       return handleResendOTP(request)
