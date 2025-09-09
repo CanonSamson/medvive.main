@@ -6,18 +6,24 @@ interface InputFieldProps {
   style?: string
   InputStyle?: string
   name?: string
-  Error?: string | undefined | false
+  error?: string | undefined | false
   type?: string
   required?: boolean
-  [key: string]: any // For additional input props
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
+  value?: string | number | readonly string[] | undefined
+  placeholder?: string
 }
 
 const InputField: React.FC<InputFieldProps> = ({
   label,
   style,
-  Error,
+  error,
   type,
-
+  onChange,
+  onBlur,
+  value,
+  placeholder,
   ...inputProps
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -39,26 +45,18 @@ const InputField: React.FC<InputFieldProps> = ({
 
       <div
         className={`${
-          Error
+          error
             ? ' border border-red-500 bg-red-50/20 rounded-[8px]'
             : 'bg-white border border-[#808080]/20'
         }  text-[14px] flex items-center gap-4 duration-500 font-light rounded-[8px]`}
       >
-        {/* {(name === "gmail" && <CiMail size={20} />) ||
-          (name === "medviveEmail" && (
-            <img
-              src="/logo-v2.png"
-              alt="logo"
-              width={20}
-              height={20}
-              className=" w-[20px] h-[20px]"
-            />
-          )) ||
-          (name == "password" && <BiLockAlt size={20} />) ||
-          (name == "userName" && <BsPerson size={20} />)} */}
         <input
           // Set the input properties using the spread operator
           {...inputProps}
+          onChange={onChange}
+          value={value}
+          onBlur={onBlur}
+          placeholder={placeholder}
           // Show password as plain text if showPassword is true, else show as the input type
           type={showPassword ? 'text' : type}
           // Apply the input style classes
@@ -80,8 +78,8 @@ const InputField: React.FC<InputFieldProps> = ({
           </div>
         )}
       </div>
-      {Error && (
-        <span className=' text-red-700 text-[12px] font-light'>{Error}</span>
+      {error && (
+        <span className=' text-red-700 text-[12px] font-light'>{error}</span>
       )}
     </div>
   )

@@ -38,13 +38,6 @@ const SignUpPage = () => {
 
   const pending = false
 
-  const patientDetail = {
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  }
-
   const onSubmit = async () => {
     if (acceptTems) return await handleAcceptedTems()
     setShowTemsModal(true)
@@ -124,10 +117,6 @@ const SignUpPage = () => {
       onSubmit
     })
 
-  useLayoutEffect(() => {
-    if (pending) return
-    if (patientDetail) router.push('/patient')
-  }, [pending, patientDetail, router])
 
   if (pending) return <></>
 
@@ -169,34 +158,31 @@ const SignUpPage = () => {
                 <InputField
                   label='Full Name'
                   name='fullName'
-                  id='fullName'
                   type='text'
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.fullName}
                   required
-                  Error={touched.fullName && errors?.fullName}
+                  error={touched.fullName && errors?.fullName}
                   placeholder='Enter your fullname'
                 />
                 <InputField
                   label='Email'
                   name='email'
-                  id='email'
                   type='email'
                   onChange={handleChange}
                   onBlur={handleBlur}
                   required
                   value={values.email}
-                  Error={touched.email && errors?.email}
+                  error={touched.email && errors?.email}
                   placeholder='example@gmail.com'
                 />
                 <InputField
                   label='Password'
                   name='password'
-                  id='password'
                   type='password'
                   required
-                  Error={touched.password && errors?.password}
+                  error={touched.password && errors?.password}
                   value={values.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -205,10 +191,9 @@ const SignUpPage = () => {
                 <InputField
                   label='Confirm Password'
                   name='confirmPassword'
-                  id='confirmPassword'
                   type='password'
                   required
-                  Error={touched.confirmPassword && errors?.confirmPassword}
+                  error={touched.confirmPassword && errors?.confirmPassword}
                   value={values.confirmPassword}
                   onChange={handleChange}
                   onBlur={handleBlur}

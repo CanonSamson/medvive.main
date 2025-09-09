@@ -4,19 +4,21 @@ import React, { useEffect, useMemo } from 'react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { APP_DEFAULT_GUEST_PATHS } from '@/config'
 import { useContextSelector } from 'use-context-selector'
-import LoadingScreen from '@/components/layout/loading/LoadingScreen'
 import { UserContext } from '@/context/user'
+import Cookies from 'js-cookie'
 
-const AuthGuard = ({
-  children,
-}: {
-  children: React.ReactNode
-}) => {
+const userType = Cookies.get('user-type')
+
+const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
   const pathName = usePathname()
-  const currentUser = useContextSelector(UserContext, state => state.currentUser)
+  const currentUser = useContextSelector(
+    UserContext,
+    state => state.currentUser
+  )
 
   const doctor = useContextSelector(UserContext, state => state.doctor)
+  const patient = useContextSelector(UserContext, state => state.patient)
 
   const isLoading = useContextSelector(UserContext, state => state.isLoading)
   const isAuthenticated = useContextSelector(
@@ -49,24 +51,25 @@ const AuthGuard = ({
     if (!allowRedirect) return
 
     if (!isAuthenticated) {
-      if (!isGuestPath) {
-        router.replace('/login')
-
-        return
+      if (userType === 'PATIENT') {
+        router.replace('/patient/login')
+      } else if (userType === 'DOCTOR') {
+        router.replace('/doctor/login')
       }
     } else {
-      if (currentUser?.emailVerified === false) {
-        router.replace('/register/verify-email')
-        return
-      } 
+      if (userType === 'PATIENT') {
+        router.replace('/patient')
+      } else if (userType === 'DOCTOR') {
+        router.replace('/doctor')
+      }
     }
   }, [isLoading, isAuthenticated, isGuestPath])
 
   if (isLoading) {
-    return <LoadingScreen />
+    return <></>
   }
 
-  return children
+  return <>{children}</>
 }
 
 export default AuthGuard

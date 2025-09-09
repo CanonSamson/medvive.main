@@ -15,22 +15,16 @@ interface SignUpCredentials {
   userDB: string
 }
 
-interface AuthResponse {
-  Success: boolean
-  Error: boolean | string
-  uid?: string
-}
-
 export class AuthService {
   loginEmailAndPassword = async ({
     email,
     password
-  }: LoginCredentials): Promise<AuthResponse | undefined> => {
+  }: LoginCredentials) => {
     try {
       await signInWithEmailAndPassword(auth, email, password)
 
       if (auth.currentUser) {
-        return { Success: true, Error: false }
+        return { success: true, error: false }
       }
     } catch (error: any) {
       let err: string | undefined
@@ -59,7 +53,7 @@ export class AuthService {
         err =
           'Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.'
       }
-      if (err) return { Success: false, Error: err }
+      if (err) return { success: false, error: err }
     }
   }
 

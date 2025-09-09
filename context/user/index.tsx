@@ -8,8 +8,9 @@ import { UserType } from '@/types/user'
 import { PatientType } from '@/types/patient'
 import { auth } from '@/firebase-config'
 import { signOut } from 'firebase/auth'
-
-
+import Cookies from 'js-cookie'
+import { firebaseDatabaseService } from '@/services/firebase/databaseService'
+import { useDoctorAndPatients } from '@/hooks/useDoctorAndPatients'
 
 export interface UserContextType {
   currentUser: UserType | null
@@ -62,8 +63,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const router = useRouter()
 
+  const userType = Cookies.get('user-type')
+
   const fetchCurrentUser = async ({ load = true }: { load: boolean }) => {
-    const userId = ''
+    const userId = auth.currentUser?.uid
+
     try {
       if (load) setIsLoading(true)
       if (!userId) {
@@ -71,16 +75,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         setCurrentUser(null)
         return
       }
-      const userData = {
-        userId,
-        name: '',
-        email: '',
-        emailVerified: false
-      }
 
-      setCurrentUser({
-        ...userData
-      })
+      if (userType === 'PATIENT') {
+        const data = await getPatientData()
+        console.log(data, 'patient')
+      } else {
+        const data = await getDoctorData()
+      }
 
       setIsAuthenticated(true)
     } catch (error) {
@@ -92,24 +93,52 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
-  useEffect(() => {
-    if (currentUser) {
-      fetchCurrentUser({ load: false })
-    }
-  }, [auth])
-
-  useEffect(() => {
-    fetchCurrentUser({ load: true })
-  }, [])
-
   const clearCookies = () => {}
-  async function logout() {
-
-    signOut(auth);
-    router.push("/");
-    setPatient(null);
-    setDoctor(null);
+  async function logout () {
+    signOut(auth)
+    router.push('/')
+    setPatient(null)
+    setDoctor(null)
   }
+
+  const getPatientData = async () => {
+    if (!auth.currentUser) return null
+    try {
+      const { data: patient } = await firebaseDatabaseService.getDB(
+        'patients',
+        auth.currentUser.uid
+      )
+      setPatient(patient)
+      return { patient }
+    } catch (error) {
+      console.error('Error fetching user user:', error)
+    }
+  }
+
+  const getDoctorData = async () => {
+    if (!auth.currentUser) return null
+    try {
+      const { data: doctor } = await firebaseDatabaseService.getDB(
+        'doctors',
+        auth.currentUser.uid
+      )
+      setDoctor(doctor)
+      return { doctor }
+    } catch (error) {
+      console.error('Error fetching user user:', error)
+    }
+  }
+
+  useDoctorAndPatients({
+    setUserDetail: data => {
+      if (data?.doctor) {
+        setDoctor(data.doctor)
+      } else if (data?.patient) {
+        setPatient(data.patient)
+      }
+    },
+    setIsLoading
+  })
 
   return (
     <UserContext.Provider

@@ -1,5 +1,4 @@
 import './globals.css'
-import { Toaster } from 'react-hot-toast'
 import localfont from 'next/font/local'
 import 'react-phone-number-input/style.css'
 import 'react-date-range/dist/styles.css' // main style file
@@ -69,7 +68,7 @@ export default function RootLayout ({
         `}
       </Script>
       <body className={`${poppins.variable}`}>
-        <Toaster />
+  
         {children}
       </body>
     </html>

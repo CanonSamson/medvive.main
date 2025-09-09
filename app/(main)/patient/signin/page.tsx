@@ -1,15 +1,17 @@
 'use client'
 import { useFormik } from 'formik'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useState } from 'react'
 import * as yup from 'yup'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { signOut } from 'firebase/auth'
 import toast from 'react-hot-toast'
-import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import InputField from '@/components/custom/InputField'
 import Button from '@/components/custom/Button'
+import { useContextSelector } from 'use-context-selector'
+import { UserContext } from '@/context/user'
+import { authService } from '@/services/firebase/authService'
+import Cookies from 'js-cookie'
 
 const validationSchema = yup.object().shape({
   email: yup.string().email().required('Email address is required'),
@@ -19,60 +21,32 @@ const validationSchema = yup.object().shape({
 const SignInPage = () => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [signInError, setSignInError] = useState(null)
 
-  const [patientDetail, setPatientDetail] = useState(null)
-
-  console.log(setPatientDetail, signInError)
-  const pending = false
-
-  const loginEmailAndPassword = async (values: {
-    email: string
-    password: string
-  }) => {
-    return { Success: true, Error: 'Error', values }
-  }
+  const fetchCurrentUser = useContextSelector(
+    UserContext,
+    state => state.fetchCurrentUser
+  )
 
   const onSubmit = async (values: { email: string; password: string }) => {
-    const { auth } = await import('@/firebase-config')
-
     setLoading(true)
-    setSignInError(null)
     try {
-      const { Success, Error } = await loginEmailAndPassword({
+      const res = await authService.loginEmailAndPassword({
         email: values.email,
         password: values.password
       })
 
-      if (Success) {
-        const patient = {
-          uid: '123',
-          fullName: 'John Doe'
-        }
+      if (res?.success === true) {
+        Cookies.set('user-type', 'PATIENT')
 
-        if (patient == null) {
-          toast.success("You aren't a patient!")
-          setLoading(false)
-          await signOut(auth)
-        } else {
-          mixpanel.identify(patient?.uid)
-          mixpanel.track('logged_in', {
-            email: values.email,
-            full_name: patient.fullName,
-            plan_name: 'free_plan',
-            user_id: patient?.uid
-          })
+        await fetchCurrentUser({ load: true })
 
-          toast.success(`Welcome  Back`)
-          router.replace('/patient')
-        }
+        toast.success(`Welcome  Back`)
+        router.replace('/patient')
       } else {
-        setLoading(false)
-        toast.error(Error)
+        toast.error(res?.error?.toString() || 'Something went wrong')
       }
-    } catch (error) {
-      console.log(error)
-      setLoading(false)
+    } catch (error: any) {
+      toast.error(error?.message || 'Something went wrong')
     } finally {
       setLoading(false)
     }
@@ -87,18 +61,6 @@ const SignInPage = () => {
       validationSchema,
       onSubmit
     })
-
-  useEffect(() => {
-    setSignInError(null)
-  }, [values])
-
-  useLayoutEffect(() => {
-    if (patientDetail) {
-      router.replace('/patient')
-    }
-  }, [pending, patientDetail, router])
-
-  if (pending) return <></>
 
   return (
     <div
@@ -148,23 +110,21 @@ const SignInPage = () => {
           <div className='mt-7 grid gap-[29px] w-full'>
             <InputField
               label='Email'
-              name='gmail'
-              id='email'
+              name='email'
               type='email'
               onChange={handleChange}
               onBlur={handleBlur}
               required
               value={values.email}
-              Error={touched.email && errors?.email}
+              error={touched.email && errors?.email}
               placeholder='example@gmail.com'
             />
             <InputField
               label='Password'
               name='password'
-              id='password'
               type='password'
               required
-              Error={touched.password && errors?.password}
+              error={touched.password && errors?.password}
               value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -192,25 +152,7 @@ const SignInPage = () => {
                 type='button'
                 text='Continue'
               />
-              {/* <div className=" mt-5 flex w-[80%] mx-auto justify-between items-center ">
-                  <span className="  h-[2px] flex bg-gray-100 w-full" />
-                  <span className=" flex  font-medium justify-center w-[100px]  ">
-                    Or
-                  </span>
-                  <span className="  h-[2px] flex bg-gray-100 w-full" />
-                </div> */}
-              {/* <button
-                  disabled={loading}
-                  onClick={handleSignUpwithGoogle}
-                  className=" rounded-full mt-4 flex
-                 w-full border h-[45px] 
-                justify-center  items-center gap-4 bg-white"
-                >
-                  <Icon name="google" size={24} />
-                  <p className=" font-poppins text-[14px] capitalize">
-                    Sign In with Google
-                  </p>
-                </button> */}
+
               <Link
                 href='/patient/signup'
                 className=' flex justify-center mb-10 tablet:mb-0 mt-6 gap-1 font-normal text-[#717991]'
