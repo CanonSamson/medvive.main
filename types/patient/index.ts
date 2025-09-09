@@ -12,4 +12,6 @@ export type PatientType = {
   heightUnit: string
   weight: number
   weightUnit: string
+  verifyLater: boolean
+  updateProfileLater: boolean
 }
