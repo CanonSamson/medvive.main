@@ -9,6 +9,7 @@ import DashboardHeader from '@/components/layout/DashboardHeader'
 import DoctorCard from '@/components/cards/DoctorCard'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
+import BreadCrumbs from '@/components/ui/bradcrubms'
 
 interface Doctor {
   id: string
@@ -76,8 +77,12 @@ const FindDoctors: React.FC = () => {
           {/* Desktop Header */}
           <DashboardHeader fullName={'Patient'} />
 
-          {/* Desktop Search and Filters */}
-          <div className=' py-6' />
+          <div className=' my-5'>
+            <BreadCrumbs
+              links={[{ href: '/patient/consultations', name: 'Consultation' }]}
+              currentPageName='Select Doctor'
+            />
+          </div>
 
           {/* Desktop Content */}
           <div className='  py-6'>
