@@ -37,7 +37,7 @@ export async function POST (
   const { action } = await params
 
   switch (action) {
-    case 'send-otp':
+    case 'send-sign-up-otp':
       return handleSendOTP(request)
     case 'verify-sign-up-otp':
       return handleVerifyOTP(request)

@@ -1,7 +1,7 @@
 export class EmailService {
   sendWelcomeEmail = ({ userId }: { userId: string }) => {
     try {
-      fetch(`/api/v1/auth/sign-up/email-verification`, {
+      fetch(`/api/v1/auth/send-sign-up-otp`, {
         method: 'POST',
         headers: {
           Accept: 'application/json, text/plain, */*',

@@ -8,6 +8,8 @@ import { Toaster } from 'sonner'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import AuthGuard from '@/utils/route-guard/AuthGuard'
 import { UserProvider } from './user'
+import { SettingModalProvider } from './model-settings'
+import NavigationLayout from '@/components/layout/navigation'
 
 export const queryClient = new QueryClient()
 
@@ -18,7 +20,11 @@ export default function ProviderWrapper ({ children }: { children: ReactNode }) 
     <QueryClientProvider client={queryClient}>
       <Toaster />
       <UserProvider>
-        <AuthGuard>{children}</AuthGuard>
+        <SettingModalProvider>
+          <AuthGuard>
+            <NavigationLayout>{children}</NavigationLayout>
+          </AuthGuard>
+        </SettingModalProvider>
       </UserProvider>
     </QueryClientProvider>
   )

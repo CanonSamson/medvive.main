@@ -1,10 +1,27 @@
+
 // ==============================|| APP CONSTANT ||============================== //
 
 export const APP_DEFAULT_PATH = '/'
 export const PATIENT_DEFAULT_PATH = '/patient'
+
 export const PATIENT_DEFAULT_GUEST_PATHS = [
   '/patient/signin',
   '/paitient/signup'
+]
+
+export const PATIENT_DEFAULT_AUTH_PATHS = [
+  `/patient`,
+  `/patient/chats`,
+  `/patient/chats/[id]/call`,
+  `/patient/consult`,
+  `/patient/consultations`,
+  `/patient/doctors`,
+  `/patient/notifications`,
+  `/patient/prescriptions/[id]`,
+  `/patient/profile`,
+  `/patient/profile/basic`,
+  `/patient/profile/medicalinfo`,
+  `/patient/wallet`
 ]
 export const DOCTOR_DEFAULT_PATH = '/doctor'
 export const DOCTOR_DEFAULT_GUEST_PATHS = ['/doctor/signin', '/doctor/signup']
@@ -16,6 +33,8 @@ export const APP_DEFAULT_GUEST_PATHS = [
   '/doctor/signin',
   '/doctor/signup'
 ]
+
+
 
 // ==============================|| APP CONFIG ||============================== //
 

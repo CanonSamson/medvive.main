@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { createContext } from 'use-context-selector'
 
 import { useRouter } from 'next/navigation'
@@ -28,12 +28,14 @@ export interface UserContextType {
   setAllowRedirect: React.Dispatch<React.SetStateAction<boolean>>
   allowRedirect: boolean
   clearCookies: () => void
+  basedCurrentUserPath: string | null
 }
 
 // Create the UserContext
 export const UserContext = createContext<UserContextType>({
   currentUser: null,
   patient: null,
+  basedCurrentUserPath: null,
   doctor: null,
   isLoading: true,
   clearCookies: () => {},
@@ -140,10 +142,18 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsLoading
   })
 
+    const basedCurrentUserPath = useMemo(() => {
+    return userType === 'PATIENT'
+      ? "/patient"
+      : userType === 'DOCTOR'
+      ? "/doctor"
+      : null
+  }, [userType])
   return (
     <UserContext.Provider
       value={{
         clearCookies,
+        basedCurrentUserPath,
         currentUser,
         isLoading,
         setIsLoading,
