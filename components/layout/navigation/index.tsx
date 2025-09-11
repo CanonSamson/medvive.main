@@ -2,10 +2,16 @@
 import DesktopNavigation from '@/components/layout/navigation/desktop'
 import MobileNavigation from '@/components/layout/navigation/mobile'
 import { APP_DEFAULT_GUEST_PATHS } from '@/config'
+import dynamic from 'next/dynamic'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 
-
+const DoctorInfoModal = dynamic(
+  () => import('@/components/modals/patient/DoctorInfoModal')
+)
+const BookDoctorModal = dynamic(
+  () => import('@/components/modals/patient/BookDoctorModal')
+)
 
 const NavigationLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname()
@@ -20,6 +26,8 @@ const NavigationLayout = ({ children }: { children: React.ReactNode }) => {
         <div className='w-full'>{children}</div>
       </div>
       {!hidden && <MobileNavigation />}
+      <DoctorInfoModal />
+      <BookDoctorModal />
     </>
   )
 }
