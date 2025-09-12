@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { createContext } from 'use-context-selector'
 
 import { useRouter } from 'next/navigation'
@@ -22,7 +22,7 @@ export interface UserContextType {
   setPatient: React.Dispatch<React.SetStateAction<PatientType | null>>
   setDoctor: React.Dispatch<React.SetStateAction<DoctorType | null>>
   isAuthenticated: boolean | undefined
-  setIsAuthenticated: React.Dispatch<React.SetStateAction<undefined | boolean>>
+  setIsAuthenticated: (value: undefined | boolean) => void
   logout: ({ redirect }: { redirect?: boolean }) => void
   fetchCurrentUser: ({ load }: { load: boolean }) => Promise<void>
   setAllowRedirect: React.Dispatch<React.SetStateAction<boolean>>
@@ -59,9 +59,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   const [doctor, setDoctor] = React.useState<DoctorType | null>(null)
   const [isLoading, setIsLoading] = React.useState<boolean>(true)
   const [allowRedirect, setAllowRedirect] = React.useState<boolean>(true)
-  const [isAuthenticated, setIsAuthenticated] = React.useState<
-    undefined | boolean
-  >(undefined)
+
+  const setIsAuthenticated = (value: undefined | boolean) => {
+    console.log(value)
+  }
+
+  const isAuthenticated = useMemo(() => {
+    return !isLoading && (!!patient || !!doctor)
+  }, [isLoading, patient, doctor])
 
   const router = useRouter()
 
@@ -82,7 +87,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         const data = await getPatientData()
         console.log(data, 'patient')
       } else {
-        const data = await getDoctorData()
+        await getDoctorData()
       }
 
       setIsAuthenticated(true)
@@ -95,12 +100,17 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
-  const clearCookies = () => {}
+  const clearCookies = () => {
+    Cookies.remove('user-type')
+    Cookies.remove('user-id')
+  }
+
   async function logout () {
     signOut(auth)
     router.push('/')
     setPatient(null)
     setDoctor(null)
+    clearCookies()
   }
 
   const getPatientData = async () => {
@@ -139,7 +149,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         setPatient(data.patient)
       }
     },
-    setIsLoading
+    setIsLoading,
+    fetchCurrentUser
   })
 
   const basedCurrentUserPath = useMemo(() => {
@@ -149,6 +160,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       ? '/doctor'
       : '/patient'
   }, [userType])
+
   return (
     <UserContext.Provider
       value={{

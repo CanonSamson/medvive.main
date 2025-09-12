@@ -21,6 +21,7 @@ interface VerificationProps {
   reSendEmail: () => void
   setShowModal: (show: boolean) => void
   setVerified: (verified: boolean) => void
+  isSending: boolean
 }
 
 const Verification = ({

@@ -3,15 +3,9 @@ import { useRouter } from 'next/navigation'
 
 import { FaBriefcaseMedical } from 'react-icons/fa'
 import { AiOutlineLogout } from 'react-icons/ai'
-import {
-  calculateAge,
-  getNameInitials,
-  getUserFirstName,
-  updateGreeting
-} from '@/utils/functions'
+import { calculateAge, getNameInitials } from '@/utils/functions'
 import Link from 'next/link'
 import Image from 'next/image'
-import { GrNotification } from 'react-icons/gr'
 import { useContextSelector } from 'use-context-selector'
 import { UserContext } from '@/context/user'
 import { MdEdit } from 'react-icons/md'
@@ -23,8 +17,6 @@ import { IoIosArrowBack } from 'react-icons/io'
 const Profile = () => {
   const patient = useContextSelector(UserContext, state => state.patient)
   const logout = useContextSelector(UserContext, state => state.logout)
-
-  const notifications = []
 
   const router = useRouter()
 

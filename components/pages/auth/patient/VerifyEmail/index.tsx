@@ -43,7 +43,7 @@ const VerifyEmail = () => {
     )
   }
 
-  const condition = patient && patient?.emailVerification == false
+  // const condition = patient && patient?.emailVerification == false
 
   // if (!condition) {
   //   return null
@@ -56,6 +56,7 @@ const VerifyEmail = () => {
           reSendEmail={reSendEmail}
           setVerified={setVerified}
           setShowModal={setShowModal}
+          isSending={isSending}
         />
       )}
     </>

@@ -1,8 +1,6 @@
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { useSettingModal } from '@/context/model-settings'
 import Star from '../Star'
-import { MouseEvent } from 'react'
 
 interface Doctor {
   uid: string
@@ -21,17 +19,10 @@ interface DoctorCardProps {
 
 const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, button }) => {
   const { openModal } = useSettingModal()
-  const { uid, stars, fullName, profileImage, specialty, price, availability } =
+  const {  stars, fullName, profileImage, specialty, price, availability } =
     doctor
-  const router = useRouter()
-  const isOnline: boolean = false
 
-  const handleBookConsult = (e: MouseEvent<HTMLButtonElement>): void => {
-    e.stopPropagation()
-    router.push(`/patient/doctors/${uid}`)
-    console.log(isOnline)
-    // Handle book consult logic here
-  }
+
 
   // Helper function to format day names to short format
   const formatDayName = (day: string): string => {

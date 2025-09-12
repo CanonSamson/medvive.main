@@ -7,7 +7,7 @@ import ConfirmBookingDetails from './steps/ConfirmBookingDetails'
 import Success from './steps/Success'
 
 const BookDoctorModal = () => {
-  const { modals, toggleModal, modalData } = useSettingModal()
+  const { modals, toggleModal } = useSettingModal()
 
   const step: number = 4
   // const step: number = modalData?.bookDoctorModal?.step || 2

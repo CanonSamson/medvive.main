@@ -32,8 +32,7 @@ export default function GenderSelect({
   onChange,
   label,
   style,
-  InputStyle,
-  name,
+ 
   Error,
   required,
   className = "",

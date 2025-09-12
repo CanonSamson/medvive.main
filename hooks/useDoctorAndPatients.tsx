@@ -15,25 +15,26 @@ interface UserDetail {
 interface UseDoctorAndPatientsProps {
   setUserDetail: (userDetail: UserDetail | null) => void
   setIsLoading: (loading: boolean) => void
+  fetchCurrentUser: ({ load }: { load: boolean }) => Promise<void>
 }
 
-export const useDoctorAndPatients = ({ 
-  setUserDetail, 
-  setIsLoading 
+export const useDoctorAndPatients = ({
+  setUserDetail,
+  setIsLoading,
 }: UseDoctorAndPatientsProps): void => {
   useEffect(() => {
     const fetchData = async () => {
-      const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      const unsubscribe = auth.onAuthStateChanged(async user => {
         if (auth.currentUser) {
           try {
             const res = await firebaseDatabaseService.getDB(
-              userType === "DOCTOR" ? "doctors" : "patients", 
+              userType === 'DOCTOR' ? 'doctors' : 'patients',
               auth.currentUser.uid
             )
 
-            setUserDetail({ 
-              doctor: userType === "DOCTOR" ? res?.data : null,
-              patient: userType === "DOCTOR" ? null : res?.data
+            setUserDetail({
+              doctor: userType === 'DOCTOR' ? res?.data : null,
+              patient: userType === 'DOCTOR' ? null : res?.data
             })
 
             setIsLoading(false)

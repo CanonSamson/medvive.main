@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { useFormik } from 'formik'
 import Onboarding from './_onboarding/Onboarding'
-import { useLayoutEffect, useState } from 'react'
+import {  useState } from 'react'
 
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
