@@ -29,6 +29,7 @@ interface CustomCustomSelectProps {
   disabled?: boolean;
   isLoading?: boolean;
   optionClassName?: string;
+  onBlur?: React.FocusEventHandler<HTMLButtonElement> | undefined
   isSearchable?: boolean;
 }
 
@@ -42,6 +43,7 @@ const CustomSelect: React.FC<CustomCustomSelectProps> = ({
   selectTriggerClassName,
   disabled = false,
   onChange,
+  onBlur,
   value,
   showStar,
   optionClassName,
@@ -89,7 +91,7 @@ const CustomSelect: React.FC<CustomCustomSelectProps> = ({
     : options;
 
   return (
-    <div className={`flex flex-col relative ${className}`}>
+    <div className={`flex flex-col relative font-poppins ${className}`}>
       {label && (
         <label>
           {label} <span className="text-red-600">{showStar && "*"}</span>
@@ -98,12 +100,14 @@ const CustomSelect: React.FC<CustomCustomSelectProps> = ({
       <Select
         value={isSearchable ? "" : value}
         onValueChange={onChange}
+    
         open={isOpen}
         onOpenChange={handleOpenChange}
       >
         <SelectTrigger
           disabled={disabled}
           className={`w-full ${selectTriggerClassName}`}
+          onBlur={onBlur}
         >
           <SelectValue
             className="text-red-700"
@@ -154,7 +158,7 @@ const CustomSelect: React.FC<CustomCustomSelectProps> = ({
           </SelectGroup>
         </SelectContent>
       </Select>
-      {error && <p className="text-negative mt-2 capitalize">{error}</p>}
+      {error && <p className="text-red-600 text-sm mt-2 capitalize">{error}</p>}
     </div>
   );
 };

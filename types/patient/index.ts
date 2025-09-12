@@ -3,6 +3,7 @@ export type PatientType = {
   fullName: string
   preferredName: string
   email: string
+  profileImage: string | null
   emailVerification: boolean
   emailVerifiedAt: string
   phoneNumber: string
@@ -14,4 +15,5 @@ export type PatientType = {
   weightUnit: string
   verifyLater: boolean
   updateProfileLater: boolean
+  occupation?: string
 }

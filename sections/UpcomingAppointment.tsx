@@ -25,7 +25,7 @@ const NoUpcomingAppointments = () => {
       </p>
 
         <Link
-          className='w-[200px] flex items-center px-4 bg-primary h-[45px] text-white rounded-md'
+          className=' px-4 flex items-center px-4 bg-primary h-[45px] text-white rounded-md'
           href='/patient/consult'
         >
           Book Doctor

@@ -142,12 +142,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsLoading
   })
 
-    const basedCurrentUserPath = useMemo(() => {
+  const basedCurrentUserPath = useMemo(() => {
     return userType === 'PATIENT'
-      ? "/patient"
+      ? '/patient'
       : userType === 'DOCTOR'
-      ? "/doctor"
-      : null
+      ? '/doctor'
+      : '/patient'
   }, [userType])
   return (
     <UserContext.Provider

@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
 import CustomNavLink from './CustomNavLink'
 import { useContextSelector } from 'use-context-selector'
 import { UserContext } from '@/context/user'
@@ -16,7 +15,7 @@ import { cn } from '@/lib/utils'
 import Avatar from '@/components/ui/avatar'
 
 const DesktopNavigation = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(true)
+  const isOpen = true
   const pathname = usePathname()
 
   // These should be defined or imported from your state management
@@ -32,8 +31,10 @@ const DesktopNavigation = () => {
   return (
     <div
       className={cn(
-        `z-[40] sticky font-poppins  font-semibold top-0 left-0  bg-[#E8EDFA]/50  w-[100px] h-screen !h-[100dvh] hidden lg:block`,
-        isOpen ? ' w-[300px]' : ' w-[110px]'
+        `z-[40] sticky font-poppins  font-semibold top-0 left-0  bg-[#E8EDFA]/50  w-[100px]  hidden lg:block`,
+        isOpen ? ' w-[300px]' : ' w-[110px]',
+        'h-screen ',
+        '!h-[100dvh]'
       )}
     >
       <div className='h-full w-full px-5'>
@@ -62,7 +63,12 @@ const DesktopNavigation = () => {
           </div>
         )}
 
-        <div className={cn(' text-[#595959]  flex flex-col gap-5  mx-auto justify-center items-center', isOpen?" pb-5":"")}>
+        <div
+          className={cn(
+            ' text-[#595959]  flex flex-col gap-5  mx-auto justify-center items-center',
+            isOpen ? ' pb-5' : ''
+          )}
+        >
           {isOpen && (
             <div className='  w-full p-2 rounded-[6px]  text-[#595959] uppercase '>
               Menu
@@ -105,8 +111,8 @@ const DesktopNavigation = () => {
           <div>
             <div className=' mb-5 border-t py-4 flex items-center gap-2'>
               <div className='  w-full p-2 rounded-[6px]  text-[#595959] uppercase '>
-             Quick actions
-            </div>
+                Quick actions
+              </div>
             </div>
           </div>
         )}
